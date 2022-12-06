@@ -20,7 +20,6 @@ class List
 
 		void add_to_list(char c)
 		{
-			std::cout << "c = " << c << std::endl;
 			size_t i = 0;
 			if (c >= 'a' && c <= 'z')
 			{
@@ -69,7 +68,10 @@ class	Rugsack
 			_items = input;
 			_sack_n = sack_n;
 		}
-
+		std::string get_items()
+		{
+			return _items;
+		}
 		size_t find_priority_total()
 		{
 			size_t prio = 0;
@@ -78,15 +80,12 @@ class	Rugsack
    				if (c >= 'a' && c <= 'z')
 				{
 					prio += c - ('a' - 1);
-					//std::cout << c << c - ('a' - 1) << std::endl;
 				}
    				if (c >= 'A' && c <= 'Z')
 				{
 					prio +=  26 + c - ('A' - 1);
-					//std::cout << c << 26 + c - ('A' - 1) << std::endl;
 				}
 			}
-			//std::cout << prio << std::endl;
 			return prio;
 		}
 		void find_double()
@@ -106,6 +105,25 @@ class	Rugsack
 				}
 			}
 		}
+		char compair(Rugsack &myrugsack1, Rugsack &myrugsack2, Rugsack &myrugsack3)
+		{
+			for (int i = 0; i < myrugsack1.get_items().length(); i++)
+			{
+				for (int j = 0; j < myrugsack2.get_items().length(); j++)
+				{
+					if (myrugsack1.get_items()[i] == myrugsack2.get_items()[j])
+					{
+						for (int k = 0; k < myrugsack3.get_items().length(); k++)
+						{
+							if (myrugsack2.get_items()[j] == myrugsack3.get_items()[k])
+								return myrugsack3.get_items()[k];
+						}
+					}
+				}
+			}
+			return 0;
+		}
+
 
 };
 
@@ -124,10 +142,23 @@ int main(void)
 	{
 		if (!std::getline(fs, input))
 			break;
-		std::cout << input << std::endl;
-		Rugsack myrugsack(input, i);
+		Rugsack myrugsack1(input, i);
+		if (!std::getline(fs, input))
+			break;
+		i++;
+		Rugsack myrugsack2(input, i);
+		if (!std::getline(fs, input))
+			break;
+		i++;
+		Rugsack myrugsack3(input, i);
 
-		myrugsack.find_double();
+		char c = myrugsack1.compair(myrugsack1, myrugsack2, myrugsack3);
+		if (c == 0)
+			std::cout << "i is " << i << "    ERROR c is 0" << std::endl;
+		if (c >= 'a' && c <= 'z')
+			_total += c - ('a' - 1);
+		else if (c >= 'A' && c <= 'Z')
+			_total += 26 + c - ('A' - 1);
 	}
 
 	// for (int k = 0; k < 52; k++)
